@@ -1,0 +1,10 @@
+add_library(core SHARED
+	sensortype.cpp
+	sensortype.h
+	stringenum.h
+	)
+target_link_libraries(core
+	Qt5::Core
+	${Boost_LIBRARIES}
+	)
+generate_export_header(core EXPORT_FILE_NAME ${CMAKE_BINARY_DIR}/export_header/core_export.h)

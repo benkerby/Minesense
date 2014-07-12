@@ -1,0 +1,10 @@
+add_executable(client
+	main.cpp
+	)
+target_link_libraries(client
+	core
+	Qt5::Core
+	${Boost_LIBRARIES}
+	)
+
+WriteDebuggerPath(client)
