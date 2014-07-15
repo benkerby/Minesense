@@ -1,3 +1,5 @@
+//! @copyright Copyright 2014 Benjamin Kerby. All rights reserved.
+
 #pragma once
 
 #include "sensortype.h"

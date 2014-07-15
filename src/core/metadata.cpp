@@ -1,3 +1,5 @@
+//! @copyright Copyright 2014 Benjamin Kerby. All rights reserved.
+
 #include "metadata.h"
 #include "serialize.h"
 #include <typeinfo>
