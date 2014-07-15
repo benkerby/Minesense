@@ -1,10 +1,19 @@
 add_library(core SHARED
+	datatype.h
+	datatype.cpp
 	sensortype.cpp
 	sensortype.h
+	serialize.cpp
+	serialize.h
+	metadata.cpp
+	metadata.h
+	units.cpp
+	units.h
 	stringenum.h
 	)
 target_link_libraries(core
 	Qt5::Core
+	Qt5::Xml
 	${Boost_LIBRARIES}
 	)
 generate_export_header(core EXPORT_FILE_NAME ${CMAKE_BINARY_DIR}/export_header/core_export.h)

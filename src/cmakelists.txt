@@ -5,7 +5,7 @@ include (GenerateExportHeader)
 project(MineSense)
 
 set(CMAKE_PREFIX_PATH "D:/packages/qt/5.3/msvc2013_64")
-find_package(Qt5 COMPONENTS Core REQUIRED)
+find_package(Qt5 COMPONENTS Core Xml REQUIRED)
 
 set(BOOST_ROOT "D:/packages/boost/1.55.0")
 set(Boost_LIBRARY_DIR "D:/packages/boost/1.55.0/lib64-msvc-12.0")

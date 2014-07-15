@@ -1,6 +1,7 @@
 #include "sensortype.h"
 #include "stringenum.h"
 #include <memory>
+#include <sstream>
 #include <boost/thread/once.hpp>
 
 using namespace minesense;
@@ -29,12 +30,24 @@ namespace
 	}
 }
 
-boost::optional< QString > minesense::sensorToString(SensorType type)
+QString minesense::sensorToString(SensorType type)
 {
-	return getMap().mapEnum(type);
+	auto string = getMap().mapEnum(type);
+	if (!string)
+	{
+		std::ostringstream ss;
+		ss << "Invalid sensor type: " << static_cast<int>(type);
+		throw std::runtime_error(ss.str());
+	}
+	return std::move(*string);
 }
 
 boost::optional< SensorType > minesense::sensorFromString(const QString& type)
 {
 	return getMap().mapString(type);
+}
+
+std::vector< SensorType > minesense::allSensors()
+{
+	return getMap().enumValues();
 }
