@@ -7,6 +7,8 @@ add_library(core SHARED
 	serialize.h
 	metadata.cpp
 	metadata.h
+	random.cpp
+	random.h
 	units.cpp
 	units.h
 	stringenum.h

@@ -53,7 +53,7 @@ namespace serialize
 			else
 			{
 				value.clear();
-				auto child = childElement(tagName);
+				auto child = childElement(tagName, false);
 				while (!child.isNull())
 				{
 					T val;
@@ -102,7 +102,7 @@ namespace serialize
 
 	private:
 		bool saving() const { return mode == Mode::saving; }
-		QDomElement childElement(const QString& tagName);
+		QDomElement childElement(const QString& tagName, bool throwOnError = true);
 		Mode mode;
 		QDomElement node;
 	};

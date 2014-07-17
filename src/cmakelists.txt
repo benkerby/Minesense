@@ -7,29 +7,44 @@ project(MineSense)
 set(CMAKE_PREFIX_PATH "D:/packages/qt/5.3/msvc2013_64")
 find_package(Qt5 COMPONENTS Core Xml REQUIRED)
 
+set(GTEST_ROOT "D:/packages/gtest/1.7.0")
+find_package(gtest)
+
 set(BOOST_ROOT "D:/packages/boost/1.55.0")
 set(Boost_LIBRARY_DIR "D:/packages/boost/1.55.0/lib64-msvc-12.0")
 find_package(Boost 1.55.0 COMPONENTS thread filesystem)
-include_directories(${Boost_INCLUDE_DIRS} ${CMAKE_BINARY_DIR}/export_header)
+include_directories(${Boost_INCLUDE_DIRS} ${GTEST_INCLUDE_DIR} ${CMAKE_BINARY_DIR}/export_header)
 link_directories(${Boost_LIBRARY_DIR})
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+if (MSVC)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W4 -WX -D_UNICODE -DUNICODE -DWIN32 -D_WIN32 -DSTRICT -DWIN32_LEAN_AND_MEAN")
+endif()
+
 function(WriteDebuggerPath EXECUTABLE_NAME)
-	get_target_property(QtCore_location Qt5::Core LOCATION)
-	get_filename_component(QtCore_directory ${QtCore_location} DIRECTORY)
-	set(ADDITIONAL_PATH "${Boost_LIBRARY_DIR};${QtCore_directory}")
-	set(USER_FILE "${EXECUTABLE_NAME}.vcxproj.user")
-	set(OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/${USER_FILE}")	
-	set(ENV_TEMPLATE 
-"<?xml version=\"1.0\" encoding=\"utf-8\"?>
-<Project ToolsVersion=\"4.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">
-	<PropertyGroup>
-		<LocalDebuggerEnvironment>PATH=${ADDITIONAL_PATH};%PATH%\nQT_FATAL_WARNINGS=1</LocalDebuggerEnvironment>
-		<DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-	</PropertyGroup>
-</Project>")
-	file(WRITE ${OUTPUT_PATH} "${ENV_TEMPLATE}")
+	if (MSVC)
+		get_target_property(QtCore_location Qt5::Core LOCATION)
+		get_filename_component(QtCore_directory ${QtCore_location} DIRECTORY)
+		get_filename_component(GTEST_LIB_DIR ${GTEST_LIBRARY} DIRECTORY)
+		set(ADDITIONAL_PATH "${Boost_LIBRARY_DIR};${QtCore_directory};${GTEST_LIB_DIR}")
+		set(USER_FILE "${EXECUTABLE_NAME}.vcxproj.user")
+		set(OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/${USER_FILE}")	
+		set(ENV_TEMPLATE 
+	"<?xml version=\"1.0\" encoding=\"utf-8\"?>
+	<Project ToolsVersion=\"4.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">
+		<PropertyGroup>
+			<LocalDebuggerEnvironment>PATH=${ADDITIONAL_PATH};%PATH%\nQT_FATAL_WARNINGS=1</LocalDebuggerEnvironment>
+			<DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+		</PropertyGroup>
+	</Project>")
+		file(WRITE ${OUTPUT_PATH} "${ENV_TEMPLATE}")
+	endif()
 endfunction(WriteDebuggerPath)
 
 add_subdirectory(core)
 add_subdirectory(server)
 add_subdirectory(client)
+add_subdirectory(tests)

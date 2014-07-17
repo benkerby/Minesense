@@ -12,11 +12,17 @@ namespace
 		return mode == serialize::Node::Mode::saving;
 	}
 
+	void setText(QDomElement& node, const QString& value)
+	{
+		auto text = node.ownerDocument().createTextNode(value);
+		node.appendChild(text);
+	}
+
 	void serializeOne(QDomElement& node, QString& value, serialize::Node::Mode mode)
 	{
 		if (saving(mode))
 		{
-			node.setNodeValue(value);
+			setText(node, value);
 		}
 		else
 		{
@@ -28,7 +34,7 @@ namespace
 	{
 		if (saving(mode))
 		{
-			node.setNodeValue(QString::number(value));
+			setText(node, QString::number(value));
 		}
 		else
 		{
@@ -46,7 +52,7 @@ namespace
 	{
 		if (saving(mode))
 		{
-			node.setNodeValue(QString::number(value));
+			setText(node, QString::number(value));
 		}
 		else
 		{
@@ -89,7 +95,7 @@ serialize::Node serialize::Node::child(const QString& tagName)
 	return Node(childElement(tagName), mode);
 }
 
-QDomElement serialize::Node::childElement(const QString& tagName)
+QDomElement serialize::Node::childElement(const QString& tagName, bool throwOnError)
 {
 	if (saving())
 	{
@@ -98,7 +104,7 @@ QDomElement serialize::Node::childElement(const QString& tagName)
 	else
 	{
 		auto child = node.firstChildElement(tagName);
-		if (child.isNull())
+		if (throwOnError && child.isNull())
 		{
 			throw std::runtime_error("Unable to find requested child element '" + tagName.toLocal8Bit() + "'");
 		}

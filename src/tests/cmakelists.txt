@@ -1,0 +1,14 @@
+add_executable(tests
+	testenums.cpp
+	testmetadata.cpp
+	main.cpp
+	)
+target_link_libraries(tests
+	core
+	Qt5::Core
+	${Boost_LIBRARIES}
+	optimized ${GTEST_LIBRARY}
+	debug ${GTEST_LIBRARY_DEBUG}
+	)
+	
+WriteDebuggerPath(tests)
