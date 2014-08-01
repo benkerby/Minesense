@@ -4,8 +4,11 @@ include (GenerateExportHeader)
 
 project(MineSense)
 
+# Instruct CMake to run moc automatically when needed.
+set(CMAKE_AUTOMOC ON)
+
 set(CMAKE_PREFIX_PATH "D:/packages/qt/5.3/msvc2013_64")
-find_package(Qt5 COMPONENTS Core Xml REQUIRED)
+find_package(Qt5 COMPONENTS Core Xml Network REQUIRED)
 
 set(GTEST_ROOT "D:/packages/gtest/1.7.0")
 find_package(gtest)

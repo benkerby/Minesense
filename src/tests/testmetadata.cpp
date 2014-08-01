@@ -47,4 +47,25 @@ namespace
 	{
 		testSerializing(&random::metaData);
 	}
+
+	struct Printer
+	{
+		template< typename T >
+		void operator()(const Field& field, T value) const
+		{
+			std::cout << "Random field: '" << field.tag.toLocal8Bit().constData() << "' = "
+				<< value << unitsToString(field.unit).toLocal8Bit().constData() << std::endl;
+		}
+	};
+
+	TEST(Binary, Print)
+	{
+		auto eng = random::engine();
+		auto data = random::metaData(eng);
+		Printer printer;
+		for (auto& field : data.fields)
+		{
+			random::binary(field, eng, printer);
+		}
+	}
 }

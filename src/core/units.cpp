@@ -19,6 +19,7 @@ namespace
 		EnumEntry< Units > entries[] =
 		{
 			{ Units::degreesCelsius, QStringLiteral("°C") },
+			{ Units::millimeters, QStringLiteral("mm") },
 			{ Units::seconds, QStringLiteral("s") },
 			{ Units::milliseconds, QStringLiteral("ms") },
 		};

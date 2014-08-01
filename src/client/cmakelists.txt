@@ -1,9 +1,12 @@
 add_executable(client
+	socketwriter.cpp
+	socketwriter.h
 	main.cpp
 	)
 target_link_libraries(client
 	core
 	Qt5::Core
+	Qt5::Network
 	${Boost_LIBRARIES}
 	)
 

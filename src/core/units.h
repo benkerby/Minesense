@@ -13,6 +13,7 @@ namespace minesense
 enum class Units
 {
 	degreesCelsius, //!< degrees Celsius
+	millimeters, //!< SI millimeters
 	seconds, //!< SI seconds
 	milliseconds //!< SI milliseconds
 };
